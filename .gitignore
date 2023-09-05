@@ -1,0 +1,9 @@
+# Ambiente virtual
+venv/
+env/
+.pipenv/
+__pycache__/
+*.log
+*.sqlite3
+*.db
+*.sqlite
