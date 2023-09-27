@@ -19,33 +19,33 @@ services:
 
     lfg-api:
         build:
-            context:  ./services/lfg_bank
-            target: base 
+            context:  ./services/lfg_api/lfg_bank
+            target: DevService 
         container_name:  lfg-api
-        env_file:  ./services/lfg_bank/.env #(3)
-        command: #(7)
-            bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; python manage.py runserver 0.0.0.0:8000'
+        env_file:  ./services/lfg_api/lfg_bank/.env #(3)
+        command: /code/entrypoint.sh
         volumes: #(4)
-            - ./services/lfg_bank:/code
+            - ./services/lfg_api/lfg_bank:/code
         stdin_open: true #(9)
         tty: true #(10)
         ports: #(3)
             - 8000:8000
         depends_on: #(8)
             - db
-            # - lfg-api-sync
+            - lfg-api-sync
             - broker
 
     lfg-api-sync:
         build:
-            context:  ./services/lfg_bank
+            context:  ./services/lfg_api/lfg_bank
+            target: CeleryService 
         container_name: lfg-api-sync
         environment:
             - CELERY_BROKER_URL=pyamqp://guest:guest@broker//
-        env_file:  ./services/lfg_bank/.env
-        command: bash -c 'celery -A lfg_bank.celery worker --loglevel=INFO'
+        env_file:  ./services/lfg_api/lfg_bank/.env
+        #command: bash -c 'celery -A lfg_bank.celery worker --loglevel=INFO'
         volumes:
-            - ./services/lfg_bank:/code
+            - ./services/lfg_api/lfg_bank:/code
         depends_on:
             - db
             - broker

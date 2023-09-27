@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "Collect static files"
+python manage.py collectstatic --noinput
+
+echo "Apply database migrations"
+python manage.py makemigrations
+python manage.py migrate
+python manage.py create_admin
+python manage.py create_initial_config_fields
+
+echo "Starting server"
+python manage.py runserver 0.0.0.0:8000
