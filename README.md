@@ -18,3 +18,35 @@ The aim is to develop a page to allow users to apply for loans from LFG_BANK. Th
 - lfg-bank Container: where Django is located.
 - lfg-background Container: where the Celery logs are.
 - broker Container: where RabbitMQ is.
+
+
+### Administration Panel Pages
+
+- To access Celery, use:
+```bash
+http://localhost:5555/
+```
+
+- To access RabbitMQ, use:
+```bash
+http://localhost:15672/
+```
+
+- To access Django Admin, use:
+```bash
+http://localhost:8000/
+```
+There are:
+
+- Proposals:
+
+```bash
+http://0.0.0.0:8000/admin/core/proposal/
+```
+
+- Configuration by fields:
+
+```bash
+http://0.0.0.0:8000/admin/core/configurablefields/
+```
+On the configuration by fields page, it is possible to choose which fields will be requested in the form.

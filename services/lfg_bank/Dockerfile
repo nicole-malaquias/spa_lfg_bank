@@ -10,19 +10,17 @@ WORKDIR /code
 
 # copiando todos os arquivos para o diretório de trabalho
 COPY requirements.txt /code/
+COPY . /code/
+
+# concedendo permissão de execução aos arquivos de entrada
+RUN chmod +x /code/entrypoint.sh
 
 # atualizando o pip e instalando requerimentos
 RUN pip install -U pip
 RUN pip install -r /code/requirements.txt
 
 # =============================================================================
-# dev - Instala dependências de dev e copia o código fonte
+# DevService - Configuração do Django
 # =============================================================================
-FROM base AS dev
-COPY requirements.txt /code/
-RUN pip install -r /code/requirements.txt
-COPY . /code/
-
-
-FROM dev AS DevService
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+FROM base AS DevService
+CMD ["/code/entrypoint.sh"]
