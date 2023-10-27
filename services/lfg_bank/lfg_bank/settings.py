@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_celery_results',
     'django_extensions',
     'rest_framework',
+    'corsheaders',
     'core'
 ]
 
@@ -56,10 +57,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+    'corsheaders.middleware.CorsMiddleware']
 
 ROOT_URLCONF = 'lfg_bank.urls'
-
+CORS_ORIGIN_ALLOW_ALL = True
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -138,6 +139,8 @@ MEDIA_URL = '/media/'
 # Celery settings
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_CACHE_BACKEND = 'default'
+CELERY_BROKER_URL='amqp://guest:guest@broker//'
+CELERY_BEAT_SCHEDULER='django_celery_beat.schedulers:DatabaseScheduler'
 
 # django setting.
 CACHES = {

@@ -17,14 +17,11 @@ app = Celery('lfg_bank')
 # Configura o Celery usando as configurações do Django
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
-# Configura a URL do broker (RabbitMQ neste caso)
-app.conf.broker_url = 'pyamqp://guest:guest@broker//'
-
 # Configura a descoberta automática de tarefas em aplicativos Django
 app.autodiscover_tasks()
 
 # Configura o agendador do Celery para usar o Django Celery Beat
-app.conf.beat_scheduler = 'django_celery_beat.schedulers.DatabaseScheduler'
+app.conf.beat_scheduler = 'django_celery_beat.schedulers.DatabaseScheduler'  # TESTA TIRAR 
 
 # Define tarefas do Celery
 @app.task(bind=True)

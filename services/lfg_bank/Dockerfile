@@ -26,6 +26,3 @@ COPY . /code/
 
 FROM dev AS DevService
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-
-FROM dev AS CeleryService
-CMD ["bash", "-c", "celery -A lfg_bank.celery worker --loglevel=INFO"]

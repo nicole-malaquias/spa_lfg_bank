@@ -9,45 +9,43 @@ services:
            - pgdata:/var/lib/postgresql/data
 
     broker:
-        image: rabbitmq:3.8.18
+        image: "rabbitmq:3.8.18-management"
         container_name: broker
         ports:
         - "5672:5672"
+        - "15672:15672"
         environment:
         - RABBITMQ_DEFAULT_USER=guest
         - RABBITMQ_DEFAULT_PASS=guest
 
     lfg-api:
         build:
-            context:  ./services/lfg_api/lfg_bank
+            context:  ./services/lfg_bank
             target: DevService 
         container_name:  lfg-api
-        env_file:  ./services/lfg_api/lfg_bank/.env #(3)
+        env_file:  ./services/lfg_bank/.env #(3)
         command: /code/entrypoint.sh
         volumes: #(4)
-            - ./services/lfg_api/lfg_bank:/code
+            - ./services/lfg_bank:/code
         stdin_open: true #(9)
         tty: true #(10)
         ports: #(3)
             - 8000:8000
         depends_on: #(8)
             - db
-            - lfg-api-sync
+            - flower
             - broker
 
-    lfg-api-sync:
-        build:
-            context:  ./services/lfg_api/lfg_bank
-            target: CeleryService 
-        container_name: lfg-api-sync
+
+    flower:
+        image: mher/flower
+        container_name: flower
         environment:
+            - FLOWER_PORT=5555
             - CELERY_BROKER_URL=pyamqp://guest:guest@broker//
-        env_file:  ./services/lfg_api/lfg_bank/.env
-        #command: bash -c 'celery -A lfg_bank.celery worker --loglevel=INFO'
-        volumes:
-            - ./services/lfg_api/lfg_bank:/code
+        ports:
+            - "5555:5555"
         depends_on:
-            - db
             - broker
 
 volumes: #(4)
