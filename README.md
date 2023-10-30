@@ -50,3 +50,14 @@ http://0.0.0.0:8000/admin/core/proposal/
 http://0.0.0.0:8000/admin/core/configurablefields/
 ```
 On the configuration by fields page, it is possible to choose which fields will be requested in the form.
+
+
+# Container Architecture
+
+When starting the project, 5 containers will be displayed:
+
+- Flower, responsible for the interface that shows the processes executed by Celery asynchronously.
+- Postgres, responsible for storing data using a Postgres database.
+- RabbitMQ, responsible for the queues.
+- Spa lfg bank, responsible for displaying the logs of Django Rest.
+- Spa lfg bank celery, responsible for displaying the logs of Celery.
