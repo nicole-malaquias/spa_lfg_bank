@@ -1,9 +1,10 @@
 import random
 import time
-from lfg_bank.celery_config import app
 from .models import Proposal
 
-@app.task
+from celery import shared_task
+
+@shared_task(name="funcao_com_atraso")
 def funcao_com_atraso(proposal_id):
     try:
         obj = Proposal.objects.get(id=proposal_id)

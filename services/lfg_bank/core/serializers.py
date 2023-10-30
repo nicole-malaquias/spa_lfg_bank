@@ -11,7 +11,7 @@ class ProposalSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         obj = Proposal.objects.create(**validated_data)
-        funcao_com_atraso.delay(obj.id)
+        funcao_com_atraso.delay(str(obj.id))
         return obj
 
         
